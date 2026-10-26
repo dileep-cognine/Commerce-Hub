@@ -1,0 +1,28 @@
+kind = "web"
+previewPath = "/marketplace/"
+title = "Marketplace"
+description = "A multi-seller marketplace with a customer storefront, seller listing and inventory tools, order management, and a demo checkout that does not charge real money."
+version = "1.0.0"
+id = "artifacts/marketplace"
+router = "path"
+
+[[services]]
+name = "web"
+paths = [ "/marketplace/" ]
+localPort = 20787
+
+[services.development]
+run = "pnpm --filter @workspace/marketplace run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/marketplace", "run", "build" ]
+serve = "static"
+publicDir = "artifacts/marketplace/dist/public"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "20787"
+BASE_PATH = "/marketplace/"
